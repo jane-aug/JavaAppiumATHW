@@ -16,4 +16,14 @@ public class MainClassTest {
 
         }
     }
+    @Test
+    public void testGetClassNumber () {
+        int b = MainC.getClass_number();
+        if (b > 45) {
+            System.out.println("Number from function GetClassNumber > 45");
+        } else {
+            System.out.println("Number from function GetClassNumber < 45");
+        }
+    }
+
 }

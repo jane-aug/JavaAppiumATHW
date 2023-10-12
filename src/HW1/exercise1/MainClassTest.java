@@ -25,5 +25,18 @@ public class MainClassTest {
             System.out.println("Number from function GetClassNumber < 45");
         }
     }
+    @Test
+    public void  testGetlassStringSub () {
+        String e = MainC.getClass_string();
+        String Str = e.substring(0,5);
+        if (Str.equals("hello")) {
+            System.out.println("String from function GetClassString starts with the word \'hello\'");
+        } else if (Str.equals("Hello")) {
+            System.out.println("String from function GetClassString starts with the word \'Hello\'");
+        } else {
+         throw new RuntimeException("String from function GetClassString does not start with the word \'hello\' or \'Hello\'");
+        }
+    }
+
 
 }

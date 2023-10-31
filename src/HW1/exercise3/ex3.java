@@ -42,7 +42,17 @@ public class ex3 {
         Assert.assertTrue("Cannot find specific search results on search page",
                 FirstTest.quantityElements(By.xpath("//*[contains(@text, 'Java')]")).size() > 1);
 
+        FirstTest.waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc=\"Navigate up\"]"),
+                "Cannot find Navigate <-",
+                5
+        );
 
+        FirstTest.waitForElementNotPresent(
+                By.xpath("//android.widget.ImageButton[@content-desc=\"Navigate up\"]"),
+                "Navigate <- still present on page",
+                5
+        );
 
         FirstTest.tearDown();
     }

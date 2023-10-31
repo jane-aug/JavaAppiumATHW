@@ -214,7 +214,7 @@ public void testCancelSearchAndDelete(){
 
 
     //Общий метод проверяющий отсутствие элемента на странице
-    private boolean waitForElementNotPresent(By by, String error_massage,long timeoutInSeconds) {
+    public boolean waitForElementNotPresent(By by, String error_massage, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_massage + "\n");
         return wait.until(

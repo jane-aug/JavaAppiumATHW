@@ -1,3 +1,4 @@
+package HW1.exercise1;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
@@ -10,9 +11,10 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
-    private AppiumDriver driver;
+    public AppiumDriver driver;
     @Before
     public void setUp() throws Exception
     {
@@ -180,7 +182,7 @@ public void testCancelSearchAndDelete(){
 
 // МЕТОДЫ
     //Общий метод для поиска элемента с передачей времени для таймаута
-    private WebElement waitForElementPresent(By by, String error_massage, long timeoutInSeconds)
+    public  WebElement waitForElementPresent(By by, String error_massage, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_massage + "\n");
@@ -190,13 +192,13 @@ public void testCancelSearchAndDelete(){
     }
 
     //Общий метод для поиска элемента  с таймаутом 5 секунд
-    private WebElement waitForElementPresent(By by, String error_massage)
+    public WebElement waitForElementPresent(By by, String error_massage)
     {
         return this.waitForElementPresent(by, error_massage, 5);
     }
 
     //Общий метод для поиска элемента с передачей времени для таймаута и клика
-    private WebElement waitForElementAndClick(By by, String error_massage, long timeoutInSeconds){
+    public WebElement waitForElementAndClick(By by, String error_massage, long timeoutInSeconds){
         WebElement element = waitForElementPresent(by,error_massage, timeoutInSeconds);
         element.click();
         return element;
@@ -204,7 +206,7 @@ public void testCancelSearchAndDelete(){
 
 
     //Общий метод для поиска элемента с передачей времени для таймаута и отправки ключей
-    private WebElement waitForElementAndSendKeys(By by, String value, String error_massage, long timeoutInSeconds){
+    public WebElement waitForElementAndSendKeys(By by, String value, String error_massage, long timeoutInSeconds){
         WebElement element = waitForElementPresent(by,error_massage, timeoutInSeconds);
         element.sendKeys(value);
         return element;
@@ -228,7 +230,7 @@ public void testCancelSearchAndDelete(){
         }
 
     //Ex 2
-    private WebElement assertElementHasText (By by, String value, String error_massage,long timeoutInSeconds){
+    public WebElement assertElementHasText(By by, String value, String error_massage, long timeoutInSeconds){
         WebElement element =  waitForElementPresent(by,error_massage, timeoutInSeconds);
         String element_name = element.getAttribute("text");
         Assert.assertEquals(
@@ -261,6 +263,14 @@ public void testCancelSearchAndDelete(){
                 5
         );
     }
+
+    // ex 3
+    public List quantityElements(By by) {
+        List elements_search = driver.findElements(by);
+        return elements_search;
+    }
+
+
 /*
     //метод для поиска по ByXpath с передачей времени для таймаута
     private WebElement waitForElementPresentByXpath(String xpath,String error_massage,long timeoutInSeconds)

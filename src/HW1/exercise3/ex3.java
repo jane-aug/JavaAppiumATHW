@@ -47,6 +47,7 @@ public class ex3 {
                 "Cannot find Navigate <-",
                 5
         );
+
         FirstTest.waitForElementNotPresent(
                 By.xpath("//android.widget.ImageButton[@content-desc=\"Navigate up\"]"),
                 "Navigate <- still present on page",

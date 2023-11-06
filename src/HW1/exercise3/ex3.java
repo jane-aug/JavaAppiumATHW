@@ -1,59 +1,37 @@
 package HW1.exercise3;
 
-import HW1.exercise1.FirstTest;
+import lib.CoreTestCase;
+import lib.ui.MainPageObject;
+import lib.ui.SearchPageObject;
+import lib.ui.StartPageObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
+public class ex3 extends CoreTestCase {
+    private lib.ui.MainPageObject MainPageObject;
 
-public class ex3 {
-    // подключаем приватные методы из первого урока ( и пока что Appium)
-    FirstTest FirstTest = new FirstTest();
+    protected  void setUp() throws Exception {
+        super.setUp();
+        MainPageObject = new MainPageObject(driver);
+    }
 
 
 
     @Test
-    public void exercise3() throws Exception {
-        FirstTest.setUp();
-        FirstTest.waitForElementAndClick(
-                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
-                "Cannot find skip button",
-                5
-        );
-        FirstTest.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find Search Wikipedia",
-                5
-        );
-        FirstTest.waitForElementAndSendKeys(
-                By.id("org.wikipedia:id/search_src_text"),
-                "Java",
-                "Cannot find search input",
-                5
-        );
+    public void testExercise3() throws Exception {
+        StartPageObject StartPageObject = new StartPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        FirstTest.waitForElementPresent(
-                By.xpath("//*[contains(@text, 'Java')]"),
-                "Cannot find specific search results",
-                10
-        );
-
+        StartPageObject.skipOnboardingButton();
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.waitForSearchResult("Java");
         Assert.assertTrue("Cannot find specific search results on search page",
-                FirstTest.quantityElements(By.xpath("//*[contains(@text, 'Java')]")).size() > 1);
+                MainPageObject.quantityElements(By.xpath("//*[contains(@text, 'Java')]")).size() > 1);
 
-        FirstTest.waitForElementAndClick(
-                By.xpath("//android.widget.ImageButton[@content-desc=\"Navigate up\"]"),
-                "Cannot find Navigate <-",
-                5
-        );
-
-        FirstTest.waitForElementNotPresent(
-                By.xpath("//android.widget.ImageButton[@content-desc=\"Navigate up\"]"),
-                "Navigate <- still present on page",
-                5
-        );
-
-        FirstTest.tearDown();
+        SearchPageObject.waitForUndoButtonToAppear();
+        SearchPageObject.clickUndoButton();
+        SearchPageObject.waitForUndoButtonToDisappear();
     }
 }

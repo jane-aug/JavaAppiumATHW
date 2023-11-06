@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="347ff4f1-4f96-4141-a54c-967af3658cb1" name="Changes" comment="hw7 ex 3">
+    <list default="true" id="347ff4f1-4f96-4141-a54c-967af3658cb1" name="Changes" comment="hw7 ex 3 (2ая правка)">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/HW1/exercise1/FirstTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW1/exercise1/FirstTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/HW1/exercise3/ex3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW1/exercise3/ex3.java" afterDir="false" />
     </list>
@@ -23,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="hw-ex3" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -41,6 +42,9 @@
         <option name="url" value="https://github.com/jane-aug/JavaAppiumATHW.git" />
       </UrlAndAccount>
     </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -61,7 +65,7 @@
     &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;hw-ex3&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;hw-ex4&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/sep/Desktop/JavaAppiumATHW/JavaAppiumATHW&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;/Users/sep/Desktop/JavaAppiumATHW/JavaAppiumATHW/src/Main.java&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
@@ -74,8 +78,8 @@
       <recent name="HW1.exercise1" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ex3">
-    <configuration name="FirstTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.FirstTest.testSaveFirstArticleToMyList">
+    <configuration name="FirstTest.testCreateList" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="JavaAppiumATHW" />
       <extension name="coverage">
         <pattern>
@@ -85,25 +89,55 @@
       </extension>
       <option name="PACKAGE_NAME" value="HW1.exercise1" />
       <option name="MAIN_CLASS_NAME" value="HW1.exercise1.FirstTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="METHOD_NAME" value="testCreateList" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FirstTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="FirstTest.testSaveFirstArticleToMyList" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="JavaAppiumATHW" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="FirstTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FirstTest.firstTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="JavaAppiumATHW" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="HW1.exercise1.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <option name="PACKAGE_NAME" value="HW1.exercise1" />
       <option name="MAIN_CLASS_NAME" value="HW1.exercise1.FirstTest" />
-      <option name="METHOD_NAME" value="firstTest" />
+      <option name="METHOD_NAME" value="testSaveFirstArticleToMyList" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FirstTest.testSaveFirstArticleToMyList" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="JavaAppiumATHW" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="HW1.exercise1.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="HW1.exercise1" />
+      <option name="MAIN_CLASS_NAME" value="HW1.exercise1.FirstTest" />
+      <option name="METHOD_NAME" value="testSaveFirstArticleToMyList" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FirstTest.testSwipeArticle" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="JavaAppiumATHW" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="HW1.exercise1.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="HW1.exercise1" />
+      <option name="MAIN_CLASS_NAME" value="HW1.exercise1.FirstTest" />
+      <option name="METHOD_NAME" value="testSwipeArticle" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -124,29 +158,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ex3.exercise3" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="JavaAppiumATHW" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="HW1.exercise3.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="HW1.exercise3" />
-      <option name="MAIN_CLASS_NAME" value="HW1.exercise3.ex3" />
-      <option name="METHOD_NAME" value="exercise3" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.FirstTest.testSaveFirstArticleToMyList" />
+        <item itemvalue="JUnit.FirstTest.testCreateList" />
+        <item itemvalue="JUnit.FirstTest.testSaveFirstArticleToMyList" />
+        <item itemvalue="JUnit.FirstTest.testSwipeArticle" />
         <item itemvalue="JUnit.ex3" />
-        <item itemvalue="JUnit.ex3.exercise3" />
-        <item itemvalue="JUnit.FirstTest (1)" />
-        <item itemvalue="JUnit.FirstTest" />
-        <item itemvalue="JUnit.FirstTest.firstTest" />
       </list>
     </recent_temporary>
   </component>
@@ -207,7 +225,23 @@
       <option name="project" value="LOCAL" />
       <updated>1698784385508</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="hw7 ex 3 (2ая правка)">
+      <option name="closed" value="true" />
+      <created>1698784760497</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1698784760497</updated>
+    </task>
+    <task id="LOCAL-00008" summary="hw7 ex 3 (2ая правка)">
+      <option name="closed" value="true" />
+      <created>1698784891452</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1698784891452</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -228,17 +262,7 @@
     <MESSAGE value="hw5" />
     <MESSAGE value="hw51" />
     <MESSAGE value="hw7 ex 3" />
-    <option name="LAST_COMMIT_MESSAGE" value="hw7 ex 3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/HW1/exercise1/FirstTest.java</url>
-          <line>186</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="hw7 ex 3 (2ая правка)" />
+    <option name="LAST_COMMIT_MESSAGE" value="hw7 ex 3 (2ая правка)" />
   </component>
 </project>

@@ -2,7 +2,11 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
+import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public class SearchPageObject  extends  MainPageObject
 {
@@ -12,7 +16,9 @@ public class SearchPageObject  extends  MainPageObject
     SEARCH_INPUT_ON_PAGE = "org.wikipedia:id/page_toolbar_button_search",
     SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/search_container']//*[@text='{SUBSTRING}']",
     SEARCH_UNDO_BUTTON = "//android.widget.ImageButton[@content-desc=\"Navigate up\"]",
-    PLACEHOLDER_SEARCH_LINE = "Search Wikipedia";
+    PLACEHOLDER_SEARCH_LINE = "Search Wikipedia",
+    SEARCH_RESULT_LOCATOR = "//*[@resource-id='org.wikipedia:id/fragment_search_results']//*[@resource-id='org.wikipedia:id/search_results_list']",
+    EMPTY_RESULT_LABEL = "//*[@text='No results']";
 
 
     public SearchPageObject (AppiumDriver driver){
@@ -65,5 +71,25 @@ public class SearchPageObject  extends  MainPageObject
     public void tapBycoordinate(){
         TouchAction action = new TouchAction(driver);
         action.press(369,1460);
+    }
+
+    public int getAmountOfElements(By by){
+        List elements = driver.findElements(by);
+        return elements.size();
+    }
+
+    public WebElement assertSearchHasResult( String error_massage, long timeoutInSeconds){
+        WebElement element =  waitForElementPresent(By.xpath(SEARCH_RESULT_LOCATOR),error_massage, timeoutInSeconds);
+        int element_count = getAmountOfElements(By.xpath(SEARCH_RESULT_LOCATOR));
+        Assert.assertTrue(
+                "We did not find results",
+                element_count > 1
+
+        );
+        return element;
+    }
+
+    public void assertSearchNotResult( String error_massage, long timeoutInSeconds){
+       waitForElementPresent(By.xpath(EMPTY_RESULT_LABEL),error_massage, timeoutInSeconds);
     }
 }

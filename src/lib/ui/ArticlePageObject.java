@@ -4,6 +4,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import java.util.List;
 
 public class ArticlePageObject extends MainPageObject{
 
@@ -36,6 +37,13 @@ public class ArticlePageObject extends MainPageObject{
     public String getArticleTitle() {
         WebElement title_element = waitForTitleElement();
         return  title_element.getAttribute("text");
+    }
+
+    public void assertArticleTitlePresent(){
+        List<WebElement> elements = driver.findElements(By.id(TITLE));
+        if (elements.isEmpty()) {
+            throw new AssertionError("Article name is did not loaded");
+       }
     }
 
     public void swipeToFooter(){

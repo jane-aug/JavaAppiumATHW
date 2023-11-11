@@ -174,5 +174,51 @@ public void testCancelSearchAndDelete(){
         // By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@text='Object-oriented programming language']")
 
     }
+
+    @Test
+    public void testAmountOfNotEmtySearch(){
+        StartPageObject StartPageObject = new StartPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        StartPageObject.skipOnboardingButton();
+
+        String searh_line = "Linkin Park Discography";
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine(searh_line);
+        SearchPageObject.assertSearchHasResult("We did not found any results",10);
+
+    }
+
+    @Test
+    public void testAmountOfEemptySerch(){
+        StartPageObject StartPageObject = new StartPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        StartPageObject.skipOnboardingButton();
+
+        String searh_line = "jhvghjhhgjghjg";
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine(searh_line);
+        SearchPageObject.assertSearchNotResult("We see results",5);
+
+
+    }
+
+    @Test
+    public void testEx6() {
+        StartPageObject StartPageObject = new StartPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+
+        StartPageObject.skipOnboardingButton();
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        ArticlePageObject.assertArticleTitlePresent();
+
+
+    }
+
 }
 

@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.TouchAction;
 import org.openqa.selenium.By;
 
 public class SearchPageObject  extends  MainPageObject
@@ -8,6 +9,7 @@ public class SearchPageObject  extends  MainPageObject
     private static final String
     SEARCH_INIT_ELEMENT = "//*[contains(@text,'Search Wikipedia')]",
     SEARCH_INPUT = "org.wikipedia:id/search_src_text",
+    SEARCH_INPUT_ON_PAGE = "org.wikipedia:id/page_toolbar_button_search",
     SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/search_container']//*[@text='{SUBSTRING}']",
     SEARCH_UNDO_BUTTON = "//android.widget.ImageButton[@content-desc=\"Navigate up\"]",
     PLACEHOLDER_SEARCH_LINE = "Search Wikipedia";
@@ -58,5 +60,10 @@ public class SearchPageObject  extends  MainPageObject
 
     public void checkPlaceholderInSearchLine(){
         this.assertElementHasText(By.id(SEARCH_INPUT),PLACEHOLDER_SEARCH_LINE,"We see unexpected placeholder",5);
+    }
+
+    public void tapBycoordinate(){
+        TouchAction action = new TouchAction(driver);
+        action.press(369,1460);
     }
 }

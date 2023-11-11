@@ -12,13 +12,23 @@ public class ArticlePageObject extends MainPageObject{
             FOOTER_ELEMENT = "pcs-footer-container-menu",
             MENU_BUTTON = "org.wikipedia:id/page_toolbar_button_show_overflow_menu",
             CUSTOMIZE_BUTTON = "org.wikipedia:id/customize_toolbar",
-            SAVE_MENU = "//android.widget.TextView[@text='Save']";
+            SAVE_MENU_IN_SETTINGS = "//android.widget.TextView[@text='Save']",
+            UNDO_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up]",
+            SAVE_MENU = "org.wikipedia:id/page_save",
+            SNACKBAR_ACTION = "org.wikipedia:id/snackbar_action",
+            FIRST_LIST = "org.wikipedia:id/item_title_container",
+            ARTICLE_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/reading_list_recycler_view']//*[@text='{SUBSTRING}']";
 
-    ;
     public ArticlePageObject(AppiumDriver driver){
         super(driver);
     }
-
+    private static String getResultListElement(String subString){
+        return ARTICLE_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", subString);
+    }
+    public void waitForSearchResult(String subString){
+        String list_result_xpath = getResultListElement(subString);
+        this.waitForElementPresent(By.xpath(list_result_xpath),"Cannot find search result with substring" + subString,5);
+    }
     public WebElement waitForTitleElement() {
         return this.waitForElementPresent(By.id(TITLE),"Cannot find article title", 10);
     }
@@ -37,22 +47,28 @@ public class ArticlePageObject extends MainPageObject{
     }
 
 
-    public void dragAndDrop(By by){
+    public void dragAndDrop(){
        TouchAction action = new TouchAction(driver);
-       WebElement  ele = this.waitForElementPresent(by, "Cannot find Save",5);
-       action.longPress(ele).moveTo( 1000, 1460).waitAction(3000).release().perform();
+       action.longPress(999, 627).moveTo(9, 1640).release().perform();
+
     }
 
 
-    public void changeMenu(By by){
+    public void changeMenu(){
         openMenu();
         this.waitForElementAndClick(By.id(CUSTOMIZE_BUTTON),"Cannot find customize_toolbar",5);
-        this.waitForElementPresent(By.xpath(SAVE_MENU),"Cannot find save menu", 5);
-        dragAndDrop(by);
-
+        this.waitForElementPresent(By.xpath(SAVE_MENU_IN_SETTINGS),"Cannot find save menu", 5);
+        dragAndDrop();
+        driver.navigate().back();
     }
     public void saveArticle(){
         openMenu();
+        this.waitForElementAndClick(By.id(SAVE_MENU),"Cannot find save button in list",5);
+        //this.waitForElementAndClick(By.id(SNACKBAR_ACTION),"Cannot find add to list",5);
+        //this.waitForElementAndClick(By.id(FIRST_LIST),"Cannot find list",5);
+        //this.waitForElementAndClick(By.id(SNACKBAR_ACTION),"Cannot find view list",5);
+       // this.waitForSearchResult("Object-oriented programming language");
+       // this.waitForElementAndClick(By.xpath(UNDO_BUTTON),"Cannot find undo",5);
 
     }
 }

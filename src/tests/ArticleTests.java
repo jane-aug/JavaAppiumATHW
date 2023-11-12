@@ -27,7 +27,6 @@ public class ArticleTests extends CoreTestCase {
 
         );
     }
-
     // Занятие 4 - продвинутые тесты
 
     @Test

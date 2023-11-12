@@ -20,6 +20,8 @@ public class SearchTest extends CoreTestCase {
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.waitForSearchResult("Object-oriented programming language");
     }
+
+
     @Test
     public void testSecondTest()
     {

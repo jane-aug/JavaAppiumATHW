@@ -56,6 +56,7 @@ public class MyListTest extends CoreTestCase
 
     }
 
+
     // создания списка
     @Test
     public void testCreateList() {

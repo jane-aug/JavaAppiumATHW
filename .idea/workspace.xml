@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="347ff4f1-4f96-4141-a54c-967af3658cb1" name="Changes" comment="ex7">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/CoreTestCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/CoreTestCase.java" afterDir="false" />
-    </list>
+    <list default="true" id="347ff4f1-4f96-4141-a54c-967af3658cb1" name="Changes" comment="ex8" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -273,7 +270,15 @@
       <option name="project" value="LOCAL" />
       <updated>1699745691102</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="ex8">
+      <option name="closed" value="true" />
+      <created>1699796857988</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1699796857988</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -297,6 +302,7 @@
     <MESSAGE value="hw7 ex 3 (2ая правка)" />
     <MESSAGE value="hw8 ex 5, 8" />
     <MESSAGE value="ex7" />
-    <option name="LAST_COMMIT_MESSAGE" value="ex7" />
+    <MESSAGE value="ex8" />
+    <option name="LAST_COMMIT_MESSAGE" value="ex8" />
   </component>
 </project>

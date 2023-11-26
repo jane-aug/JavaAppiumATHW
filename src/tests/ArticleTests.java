@@ -15,7 +15,7 @@ public class ArticleTests extends CoreTestCase {
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
         ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
 
-        StartPageObject.skipOnboardingButton();
+        StartPageObject.ANDROIDskipOnboardingButton();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
@@ -38,12 +38,13 @@ public class ArticleTests extends CoreTestCase {
         ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
 
 
-        StartPageObject.skipOnboardingButton();
+        StartPageObject.ANDROIDskipOnboardingButton();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Appium");
         SearchPageObject.clickByArticleWithSubstring("Automation for Apps");
         ArticlePageObject.waitForTitleElement();
         MainPageObject.tuochByCoordinate(671,441);
+        ArticlePageObject.changeMenu();
         ArticlePageObject.swipeToFooter();
 
     }

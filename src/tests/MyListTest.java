@@ -17,7 +17,7 @@ public class MyListTest extends CoreTestCase
         SavedArticlePageObject SavedArticlePageObject = new SavedArticlePageObject(driver);
 
 
-        StartPageObject.skipOnboardingButton();
+        StartPageObject.ANDROIDskipOnboardingButton();
 
         // 1 статья
         SearchPageObject.initSearchInput();
@@ -46,9 +46,9 @@ public class MyListTest extends CoreTestCase
         //SavedArticlePageObject.clickByArticleInListWithSubstring("Saved");
         SavedArticlePageObject.clickByArticleInList();
 
-        MainPageObject.swipeElementToLeft(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"), "Cannot find saved article");
-        MainPageObject.assertElementHasNotText(By.id("org.wikipedia:id/page_list_item_description"), "Object-oriented programming language","Cannot  delete article", 5);
-        MainPageObject.assertElementHasText(By.id("org.wikipedia:id/page_list_item_description"), "Automation for Apps","Second article is still in list", 5);
+        MainPageObject.swipeElementToLeft("xpath://*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']", "Cannot find saved article");
+        MainPageObject.assertElementHasNotText("id:org.wikipedia:id/page_list_item_description", "Object-oriented programming language","Cannot  delete article", 5);
+        MainPageObject.assertElementHasText("id:org.wikipedia:id/page_list_item_description", "Automation for Apps","Second article is still in list", 5);
 
         // MainPageObject.waitForElementNotPresent(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_description']//*[@text='Object-oriented programming language']"), "Cannot  delete article ", 5);
         //  MainPageObject.waitForElementPresent(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_description']//*[@text='Automation for Apps]"), "Second article is still in list", 10);
@@ -63,7 +63,7 @@ public class MyListTest extends CoreTestCase
         StartPageObject StartPageObject = new StartPageObject(driver);
         SavedArticlePageObject SavedArticlePageObject = new SavedArticlePageObject(driver);
 
-        StartPageObject.skipOnboardingButton();
+        StartPageObject.ANDROIDskipOnboardingButton();
         SavedArticlePageObject.getSavedAriclePage();
         SavedArticlePageObject.createNewList("First");
     }

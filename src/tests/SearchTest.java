@@ -15,7 +15,7 @@ public class SearchTest extends CoreTestCase {
         StartPageObject StartPageObject = new StartPageObject(driver);
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        StartPageObject.skipOnboardingButton();
+        StartPageObject.ANDROIDskipOnboardingButton();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.waitForSearchResult("Object-oriented programming language");
@@ -28,7 +28,7 @@ public class SearchTest extends CoreTestCase {
         StartPageObject StartPageObject = new StartPageObject(driver);
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        StartPageObject.skipOnboardingButton();
+        StartPageObject.ANDROIDskipOnboardingButton();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.waitForUndoButtonToAppear();
@@ -43,7 +43,7 @@ public class SearchTest extends CoreTestCase {
         StartPageObject StartPageObject = new StartPageObject(driver);
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        StartPageObject.skipOnboardingButton();
+        StartPageObject.ANDROIDskipOnboardingButton();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clearSearchText();
@@ -59,12 +59,12 @@ public class SearchTest extends CoreTestCase {
         StartPageObject StartPageObject = new StartPageObject(driver);
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        StartPageObject.skipOnboardingButton();
+        StartPageObject.ANDROIDskipOnboardingButton();
         SearchPageObject.initSearchInput();
         SearchPageObject.checkPlaceholderInSearchLine();
 
         MainPageObject.assertElementHasText(
-                By.id("org.wikipedia:id/search_src_text"),
+                "id:org.wikipedia:id/search_src_text",
                 "Search Wikipedia",
                 "We see unexpected title",
                 5
@@ -78,7 +78,7 @@ public class SearchTest extends CoreTestCase {
         StartPageObject StartPageObject = new StartPageObject(driver);
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        StartPageObject.skipOnboardingButton();
+        StartPageObject.ANDROIDskipOnboardingButton();
 
         String searh_line = "Linkin Park Discography";
         SearchPageObject.initSearchInput();
@@ -92,7 +92,7 @@ public class SearchTest extends CoreTestCase {
         StartPageObject StartPageObject = new StartPageObject(driver);
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        StartPageObject.skipOnboardingButton();
+        StartPageObject.ANDROIDskipOnboardingButton();
 
         String searh_line = "jhvghjhhgjghjg";
         SearchPageObject.initSearchInput();
@@ -108,7 +108,7 @@ public class SearchTest extends CoreTestCase {
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
         ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
 
-        StartPageObject.skipOnboardingButton();
+        StartPageObject.ANDROIDskipOnboardingButton();
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");

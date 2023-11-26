@@ -23,12 +23,12 @@ public class ex3 extends CoreTestCase {
         StartPageObject StartPageObject = new StartPageObject(driver);
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        StartPageObject.skipOnboardingButton();
+        StartPageObject.ANDROIDskipOnboardingButton();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.waitForSearchResult("Java");
         Assert.assertTrue("Cannot find specific search results on search page",
-                MainPageObject.quantityElements(By.xpath("//*[contains(@text, 'Java')]")).size() > 1);
+                MainPageObject.quantityElements("xpath://*[contains(@text, 'Java')]").size() > 1);
 
         SearchPageObject.waitForUndoButtonToAppear();
         SearchPageObject.clickUndoButton();

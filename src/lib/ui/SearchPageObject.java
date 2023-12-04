@@ -9,17 +9,18 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class SearchPageObject  extends  MainPageObject
+abstract public class SearchPageObject  extends  MainPageObject
 {
-    private static final String
-    SEARCH_INIT_ELEMENT = "xpath://*[contains(@text,'Search Wikipedia')]",
-    SEARCH_INPUT = "id:org.wikipedia:id/search_src_text",
-    SEARCH_INPUT_ON_PAGE = "id:org.wikipedia:id/page_toolbar_button_search",
-    SEARCH_RESULT_BY_SUBSTRING_TPL = "xpath://*[@resource-id='org.wikipedia:id/search_container']//*[@text='{SUBSTRING}']",
-    SEARCH_UNDO_BUTTON = "xpath://android.widget.ImageButton[@content-desc=\"Navigate up\"]",
-    PLACEHOLDER_SEARCH_LINE = "Search Wikipedia",
-    SEARCH_RESULT_LOCATOR = "xpath://*[@resource-id='org.wikipedia:id/fragment_search_results']//*[@resource-id='org.wikipedia:id/search_results_list']",
-    EMPTY_RESULT_LABEL = "xpath://*[@text='No results']";
+    protected static  String
+            SEARCH_INIT_ELEMENT,
+            SEARCH_INPUT,
+            SEARCH_INPUT_ON_PAGE,
+            SEARCH_RESULT_BY_SUBSTRING_TPL,
+            SEARCH_UNDO_BUTTON,
+            PLACEHOLDER_SEARCH_LINE,
+            SEARCH_RESULT_LOCATOR ,
+            EMPTY_RESULT_LABEL,
+            CANCEL_BUTTON_IN_SEARCH_LINE;
 
 
     public SearchPageObject (AppiumDriver driver){
@@ -33,8 +34,13 @@ public class SearchPageObject  extends  MainPageObject
         this.waitForElementPresent(SEARCH_INIT_ELEMENT,"Cannot find search input after clicking search init element",5);
         this.waitForElementAndClick(SEARCH_INIT_ELEMENT, "Cannot find and click search element",5);
     }
-    //TEMPLATE METHODS
 
+    // иницилизация поиска на странице
+   public  void  initSearhInputOnPage() {
+       this.waitForElementPresent(SEARCH_INPUT_ON_PAGE,"Cannot find search input after clicking search init element",5);
+       this.waitForElementAndClick(SEARCH_INPUT_ON_PAGE, "Cannot find and click search element",5);
+
+   }
     public void typeSearchLine(String search_line){
         this.waitForElementAndSendKeys(SEARCH_INPUT, search_line,"Cannot find and type into search input",5);
     }
@@ -58,7 +64,7 @@ public class SearchPageObject  extends  MainPageObject
 
     public void clickByArticleWithSubstring(String subString){
         String search_result_xpath = getResultSearchElement(subString);
-        this.waitForElementAndClick(search_result_xpath,"Cannot find and click search result with substring" + subString,10);
+        this.waitForElementAndClick(search_result_xpath,"Cannot find and click search result with substring " + subString,10);
     }
 
     public void clearSearchText(){
@@ -94,5 +100,10 @@ public class SearchPageObject  extends  MainPageObject
 
     public void assertSearchNotResult( String error_massage, long timeoutInSeconds){
        waitForElementPresent(EMPTY_RESULT_LABEL,error_massage, timeoutInSeconds);
+    }
+
+    public void cancelSearch(){
+        waitForElementAndClick(CANCEL_BUTTON_IN_SEARCH_LINE, "Cannot find cancel button in search line", 5);
+
     }
 }

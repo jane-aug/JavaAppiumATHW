@@ -3,17 +3,19 @@ package lib.ui;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 
-public class SavedArticlePageObject extends MainPageObject{
-    private static final String
-            SAVED = "id:org.wikipedia:id/nav_tab_reading_lists",
-            EXPLORE = "id:org.wikipedia:id/nav_tab_explore",
-            MENU_BUTTON = "id:org.wikipedia:id/menu_overflow_button",
-            CRATE_NEW_LIST_BUTTON = "id:org.wikipedia:id/reading_lists_overflow_create_new_list",
-            INPUT_FIELD_FOR_NEW_LIST = "id:org.wikipedia:id/text_input",
-            FIELD_NAME_FOR_LIST = "id:org.wikipedia:id/item_title",
-            OK_BUTTON = "id:android:id/button1",
-            ARTICLE_IN_LUST_RESULT_BY_SUBSTRING_TPL = "xpath://android.widget.TextView[@text='{SUBSTRING}']",
-            ITEM_TITLE = "id:org.wikipedia:id/item_title";
+abstract public class SavedArticlePageObject extends MainPageObject{
+    protected static  String
+            SAVED,
+            EXPLORE,
+            MENU_BUTTON ,
+            CRATE_NEW_LIST_BUTTON ,
+            INPUT_FIELD_FOR_NEW_LIST,
+            FIELD_NAME_FOR_LIST ,
+            OK_BUTTON ,
+            ARTICLE_IN_LUST_RESULT_BY_SUBSTRING_TPL,
+            ITEM_TITLE,
+            CLOSE_SINCH_X_BUTTON,
+            DELETE_BUTTON_ON_SAVED_PAGE;
 
 
 
@@ -55,5 +57,12 @@ public class SavedArticlePageObject extends MainPageObject{
 
     }
 
+    public void closeSinchXButton (){
+        waitForElementAndClick(CLOSE_SINCH_X_BUTTON,"Cannont find and click X button",5);
+    }
+
+    public void deleteArticleOnSavedPage(){
+        waitForElementAndClick(DELETE_BUTTON_ON_SAVED_PAGE,"Cannont find and click delete button",5);
+    }
 
 }

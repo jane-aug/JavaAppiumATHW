@@ -4,14 +4,19 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
+import lib.Platform;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -75,7 +80,15 @@ public class MainPageObject {
     //Ex 2
     public WebElement assertElementHasText(String loccator, String value, String error_massage, long timeoutInSeconds){
         WebElement element =  waitForElementPresent(loccator,error_massage, timeoutInSeconds);
-        String element_name = element.getAttribute("text");
+        String element_name;
+        if (Platform.getInstance().isAndroid()){
+        element_name= element.getAttribute("text");
+            System.out.println(element_name);
+        }
+        else {
+            element_name = element.getAttribute("name");
+            System.out.println(element_name);
+        }
         Assert.assertEquals(
                 error_massage,
                 value,
@@ -86,7 +99,13 @@ public class MainPageObject {
     }
     public WebElement assertElementHasNotText(String loccator, String value, String error_massage, long timeoutInSeconds){
         WebElement element =  waitForElementPresent(loccator,error_massage, timeoutInSeconds);
-        String element_name = element.getAttribute("text");
+        String element_name;
+        if (Platform.getInstance().isAndroid()){
+            element_name = element.getAttribute("text");
+            System.out.println(element_name);}
+        else {
+            element_name = element.getAttribute("name");
+            System.out.println(element_name);}
         Assert.assertNotEquals(
                 error_massage,
                 value,
@@ -113,12 +132,39 @@ public class MainPageObject {
 
         //action.press(x, start_y).waitAction(timeOfSwipe).moveTo(x, end_y).release().perform(); // поднятие версии
 
-        action.press(PointOption.point(x, start_y));
-        action.waitAction(WaitOptions.waitOptions(Duration.ofMillis(timeOfSwipe)));
+        action.press(PointOption.point(x, start_y)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(timeOfSwipe))).moveTo(PointOption.point(x,end_y)).release().perform();
     }
 
     public void swipeUpQuick(){
         swipeUp(200);
+    }
+
+    //метод свайпа v2
+
+    public void verticalSwipeToBottom(){
+        Dimension size = driver.manage().window().getSize();
+        int startY = (int) (size.height * 0.70);
+        int endY = (int) (size.height * 0.30);
+        int centerX = size.width / 2;
+
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH,"finger");
+        Sequence swipe = new Sequence(finger,1);
+
+        //Двигаем палец на начальную позицию
+        swipe.addAction(finger.createPointerMove(Duration.ofSeconds(0),
+                PointerInput.Origin.viewport(),centerX,(int)startY));
+        //Палец прикасается к экрану
+        swipe.addAction(finger.createPointerDown(0));
+
+        //Палец двигается к конечной точке
+        swipe.addAction(finger.createPointerMove(Duration.ofMillis(700),
+                PointerInput.Origin.viewport(),centerX,(int)endY));
+
+        //Убираем палец с экрана
+        swipe.addAction(finger.createPointerUp(0));
+
+        //Выполняем действия
+        driver.perform(Arrays.asList(swipe));
     }
 
     public void swipeUpToFindElement (String loccator, String error_massage, int max_swipes){
@@ -129,7 +175,7 @@ public class MainPageObject {
                 waitForElementPresent(loccator, "Cannot find element by swiping up. \n"+ error_massage, 0);
                 return;
             }
-            swipeUpQuick();
+            verticalSwipeToBottom();
             ++already_swiped;
         }
     }
@@ -152,6 +198,45 @@ public class MainPageObject {
 
     }
 
+        // рефактор свайпа проблема с Map.of
+    public void swipeElementToLeftv2 (String loсcator, String error_message) {
+        RemoteWebElement carousel = (RemoteWebElement) waitForElementPresent(
+                loсcator,
+                error_message,
+                10);
+      //  driver.executeScript("gesture: swipe", Map.of("elementId", carousel.getId(), "percentage", 50, "direction", "left"));
+
+
+    }
+
+    public void swipeElementToLeftv3(String locator, String errorMessage) {
+        WebElement element = waitForElementPresent(
+                locator,
+                errorMessage,
+                10);
+        int leftX = element.getLocation().getX();
+        int rightX = leftX + element.getSize().getWidth();
+        int upperY = element.getLocation().getY();
+        int lowerY = upperY + element.getSize().getHeight();
+        int middleY = (upperY + lowerY)/2;
+
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH,"finger");
+        Sequence swipe = new Sequence(finger,1);
+        //Двигаем палец на начальную позицию
+        swipe.addAction(finger.createPointerMove(Duration.ofSeconds(0),
+                        PointerInput.Origin.viewport(),rightX -10,(int)middleY))
+                //Палец прикасается к экрану
+                .addAction(finger.createPointerDown(0))
+                //Палец двигается к конечной точке
+                .addAction(finger.createPointerMove(Duration.ofMillis(700),
+                        PointerInput.Origin.viewport(),leftX + 10,(int)middleY))
+                //Убираем палец с экрана
+                .addAction(finger.createPointerUp(0));
+        driver.perform(Arrays.asList(swipe));
+    }
+
+
+
     public void tuochByCoordinate(int x,int y){
         TouchAction action = new TouchAction(driver);
         // action.press(x,y).release().perform(); // поднятие версии
@@ -160,95 +245,7 @@ public class MainPageObject {
         action.perform();
     }
 
-        /*
-    //метод для поиска по ByXpath с передачей времени для таймаута
-    private WebElement waitForElementPresentByXpath(String xpath,String error_massage,long timeoutInSeconds)
-    {
-        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(error_massage + "\n");
-        By by = By.xpath(xpath);
-        return wait.until(
-                ExpectedConditions.presenceOfElementLocated(by)
-        );
-    }
-
-
-    //метод для поиска по ByXpath с таймаутом 5 секунд
-    private WebElement waitForElementPresentByXpath(String xpath,String error_massage)
-    {
-       return waitForElementPresentByXpath(xpath, error_massage, 5);
-    }
-
-
-    //метод для поиска по ByID с передачей времени для таймаута
-    private WebElement waitForElementPresentByID(String id,String error_massage,long timeoutInSeconds)
-    {
-        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(error_massage + "\n");
-        By by = By.id(id);
-        return wait.until(
-                ExpectedConditions.presenceOfElementLocated(by)
-        );
-    }
-
-
-    //метод для поиска по ByID с таймаутом 5 секунд
-    private WebElement waitForElementPresentByID(String id,String error_massage)
-    {
-        return waitForElementPresentByID(id, error_massage, 5);
-    }
-
-    //метод для поиска по ByXpath с передачей времени для таймаута и клика
-    private WebElement waitForElementByXpathAndClick(String xpath,String error_massage,long timeoutInSeconds){
-        WebElement element = waitForElementPresentByXpath(xpath,error_massage, timeoutInSeconds);
-        element.click();
-        return element;
-    }
-
-    //метод для поиска по ByID с передачей времени для таймаута и клика
-    private WebElement waitForElementByIDAndClick(String id,String error_massage,long timeoutInSeconds){
-        WebElement element = waitForElementPresentByID(id,error_massage, timeoutInSeconds);
-        element.click();
-        return element;
-    }
-
-
-    //метод для поиска по ByXpath с передачей времени для таймаута и отправки ключей
-    private WebElement waitForElementByXpathAndSendKeys(String xpath,String value, String error_massage,long timeoutInSeconds){
-        WebElement element = waitForElementPresentByXpath(xpath,error_massage, timeoutInSeconds);
-        element.sendKeys(value);
-        return element;
-    }
-
-
-    //метод для поиска по ByID с передачей времени для таймаута и отправки ключей
-    private WebElement waitForElementByIDAndSendKeys(String id,String value, String error_massage,long timeoutInSeconds){
-        WebElement element = waitForElementPresentByID(id,error_massage, timeoutInSeconds);
-        element.sendKeys(value);
-        return element;
-    }
-
-
-    // метод проверяющий отсутствие элемента на странице ByXpath
-    private boolean waitForElementNotPresent(String xpath, String error_massage,long timeoutInSeconds){
-        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(error_massage + "\n");
-        By by = By.xpath(xpath);
-        return wait.until(
-                ExpectedConditions.invisibilityOfElementLocated(by)
-        );
-    };
-
-
-    // метод проверяющий отсутствие элемента на странице ByID
-    private boolean waitForElementByIDNotPresent(String id, String error_massage,long timeoutInSeconds){
-        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(error_massage + "\n");
-        By by = By.id(id);
-        return wait.until(
-                ExpectedConditions.invisibilityOfElementLocated(by)
-        ); */
-
+    // определение типа локатора
     public By getLocatorByString(String locator_with_type){
         String[] exploded_loccator;
         exploded_loccator = locator_with_type.split(Pattern.quote(":"), 2);
@@ -264,6 +261,25 @@ public class MainPageObject {
         } else {
             throw new IllegalArgumentException("Cannot get type of loccator. Loccator "+ locator_with_type);
         }
+    }
+
+// свайпаем пока не найдем элемент
+    public void swipeUpTillElementAppear(String locator, String error_massage, int max_swipes){
+        int already_swiped = 0;
+        while (!this.isElementLocatedOnTheScreen(locator)) {
+            if(already_swiped > max_swipes){
+                Assert.assertTrue(error_massage,this.isElementLocatedOnTheScreen(locator));
+            }
+            verticalSwipeToBottom();
+            ++already_swiped;
+        }
+    }
+    // определяем есть ли элемент на экрране ( виден ли)
+    public boolean isElementLocatedOnTheScreen(String locator)
+    {
+        int element_location_by_y = this.waitForElementPresent(locator, "Cannot find element by locator", 5).getLocation().getY();
+        int screen_size_by_y = driver.manage().window().getSize().getHeight();
+        return element_location_by_y < screen_size_by_y;
     }
 
 }

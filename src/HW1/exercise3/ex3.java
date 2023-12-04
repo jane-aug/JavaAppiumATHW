@@ -4,9 +4,10 @@ import lib.CoreTestCase;
 import lib.ui.MainPageObject;
 import lib.ui.SearchPageObject;
 import lib.ui.StartPageObject;
+import lib.ui.factories.SearchPageObjectFactory;
+import lib.ui.factories.StartPageObjectFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 public class ex3 extends CoreTestCase {
     private lib.ui.MainPageObject MainPageObject;
@@ -20,10 +21,10 @@ public class ex3 extends CoreTestCase {
 
     @Test
     public void testExercise3() throws Exception {
-        StartPageObject StartPageObject = new StartPageObject(driver);
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        StartPageObject StartPageObject = StartPageObjectFactory.get(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
-        StartPageObject.ANDROIDskipOnboardingButton();
+        StartPageObject.skipOnboardingButton();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.waitForSearchResult("Java");

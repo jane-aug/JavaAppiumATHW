@@ -3,23 +3,24 @@ package lib.ui;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.offset.PointOption;
+import lib.Platform;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import java.util.List;
 
-public class ArticlePageObject extends MainPageObject{
+abstract public class ArticlePageObject extends MainPageObject{
 
-    private static final String
-            TITLE = "xpath://android.view.View[@resource-id=\"pcs-edit-section-title-description\"]",
-            FOOTER_ELEMENT = "xpath://android.view.View[@resource-id=\"pcs-footer-container-menu\"]",
-            MENU_BUTTON = "id:org.wikipedia:id/page_toolbar_button_show_overflow_menu",
-            CUSTOMIZE_BUTTON = "id:org.wikipedia:id/customize_toolbar",
-            SAVE_MENU_IN_SETTINGS = "xpath://android.widget.TextView[@text='Save']",
-            UNDO_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up]",
-            SAVE_MENU = "id:org.wikipedia:id/page_save",
-            SNACKBAR_ACTION = "id:org.wikipedia:id/snackbar_action",
-            FIRST_LIST = "id:org.wikipedia:id/item_title_container",
-            ARTICLE_RESULT_BY_SUBSTRING_TPL = "xpath://*[@resource-id='org.wikipedia:id/reading_list_recycler_view']//*[@text='{SUBSTRING}']";
+    protected static  String
+            TITLE ,
+            FOOTER_ELEMENT,
+            MENU_BUTTON ,
+            CUSTOMIZE_BUTTON ,
+            SAVE_MENU_IN_SETTINGS ,
+            UNDO_BUTTON,
+            SAVE_MENU ,
+            SNACKBAR_ACTION ,
+            FIRST_LIST ,
+            ARTICLE_RESULT_BY_SUBSTRING_TPL ;
 
     public ArticlePageObject(AppiumDriver driver){
         super(driver);
@@ -37,7 +38,9 @@ public class ArticlePageObject extends MainPageObject{
 
     public String getArticleTitle() {
         WebElement title_element = waitForTitleElement();
-        return  title_element.getAttribute("text");
+        if (Platform.getInstance().isAndroid()) {
+        return  title_element.getAttribute("text");}
+        else return  title_element.getAttribute("name");
     }
 
     public void assertArticleTitlePresent(){
@@ -48,7 +51,11 @@ public class ArticlePageObject extends MainPageObject{
     }
 
     public void swipeToFooter(){
-        this.swipeUpToFindElement(FOOTER_ELEMENT,"Did not find footer", 20);
+        if (Platform.getInstance().isAndroid()){
+        this.swipeUpToFindElement(FOOTER_ELEMENT,"Did not find footer on Android", 40);}
+        else {
+            this.swipeUpTillElementAppear(FOOTER_ELEMENT, "Did not find footer on iOS", 40);
+        }
     }
 
     public void openMenu(){
@@ -72,8 +79,8 @@ public class ArticlePageObject extends MainPageObject{
         driver.navigate().back();
     }
     public void saveArticle(){
-        openMenu();
-        this.waitForElementAndClick(SAVE_MENU,"Cannot find save button in list",5);
+        if (Platform.getInstance().isAndroid()) {openMenu();}
+        else this.waitForElementAndClick(SAVE_MENU,"Cannot find save button in list",5);
         //this.waitForElementAndClick(By.id(SNACKBAR_ACTION),"Cannot find add to list",5);
         //this.waitForElementAndClick(By.id(FIRST_LIST),"Cannot find list",5);
         //this.waitForElementAndClick(By.id(SNACKBAR_ACTION),"Cannot find view list",5);

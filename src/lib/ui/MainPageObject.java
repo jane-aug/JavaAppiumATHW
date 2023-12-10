@@ -8,9 +8,11 @@ import lib.Platform;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,12 +20,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class MainPageObject {
-    protected AppiumDriver driver;
+    protected RemoteWebDriver driver;
 
-    public MainPageObject(AppiumDriver driver) {
+    public MainPageObject(RemoteWebDriver driver) {
         this.driver = driver;
     }
 
@@ -85,8 +88,11 @@ public class MainPageObject {
         element_name= element.getAttribute("text");
             System.out.println(element_name);
         }
-        else {
+        else if (Platform.getInstance().isIOS()){
             element_name = element.getAttribute("name");
+            System.out.println(element_name);
+        } else {
+            element_name = element.getAttribute("placeholder");
             System.out.println(element_name);
         }
         Assert.assertEquals(
@@ -124,19 +130,45 @@ public class MainPageObject {
 
     // метод свайп по относительным координатам
     public void swipeUp(int timeOfSwipe){
-        TouchAction action = new TouchAction(driver);
-        Dimension size = driver.manage().window().getSize();
-        int x = size.width / 2;
-        int start_y = (int) (size.height * 0.8);
-        int end_y = (int) (size.height * 0.2);
+        if (driver instanceof AppiumDriver){
 
-        //action.press(x, start_y).waitAction(timeOfSwipe).moveTo(x, end_y).release().perform(); // поднятие версии
+            TouchAction action = new TouchAction((AppiumDriver)driver);
+            Dimension size = driver.manage().window().getSize();
+            int x = size.width / 2;
+            int start_y = (int) (size.height * 0.8);
+            int end_y = (int) (size.height * 0.2);
 
-        action.press(PointOption.point(x, start_y)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(timeOfSwipe))).moveTo(PointOption.point(x,end_y)).release().perform();
-    }
+            //action.press(x, start_y).waitAction(timeOfSwipe).moveTo(x, end_y).release().perform(); // поднятие версии
+
+            action.press(PointOption.point(x, start_y)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(timeOfSwipe))).moveTo(PointOption.point(x, end_y)).release().perform();
+        } else {
+            System.out.println("Method swipeUp() does nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
+   }
 
     public void swipeUpQuick(){
         swipeUp(200);
+    }
+
+    public void scrollWebPageUp() {
+        if (Platform.getInstance().isMW()) {
+            JavascriptExecutor JSExecutor  = (JavascriptExecutor) driver;
+            JSExecutor.executeScript("window.scrollBy(0,250)");
+        } else {
+            System.out.println("Method scrollWebPageUp() does nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
+    }
+
+    public void scrollWebPageTillElementNotVisible (String loccator, String error_massage, int max_swipes){
+        int already_swiped= 0;
+        WebElement element = this.waitForElementPresent(loccator, error_massage);
+        while (!this.isElementLocatedOnTheScreen(loccator)) {
+            scrollWebPageUp();
+            ++already_swiped;
+            if (already_swiped > max_swipes) {
+                Assert.assertTrue(error_massage, element.isDisplayed());
+            }
+        }
     }
 
     //метод свайпа v2
@@ -181,21 +213,25 @@ public class MainPageObject {
     }
 
     public void swipeElementToLeft(String loccator, String  error_massage){
-        WebElement element =  waitForElementPresent(loccator, error_massage, 10);
-        int left_x = element.getLocation().getX();
-        int right_x  = left_x + element.getSize().getWidth();
+        if (driver instanceof AppiumDriver) {
+            WebElement element = waitForElementPresent(loccator, error_massage, 10);
+            int left_x = element.getLocation().getX();
+            int right_x = left_x + element.getSize().getWidth();
 
-        int upper_y = element.getLocation().getY();
-        int lower_y = upper_y + element.getSize().getHeight();
-        int middle_y = (upper_y+lower_y) /2;
+            int upper_y = element.getLocation().getY();
+            int lower_y = upper_y + element.getSize().getHeight();
+            int middle_y = (upper_y + lower_y) / 2;
 
-        TouchAction action = new TouchAction(driver);
-        // action.press(right_x,middle_y).waitAction(300).moveTo(left_x,middle_y).release().perform(); поднятие версии
-        action
-                .press(PointOption.point(right_x, middle_y)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)))
-                .release()
-                .perform();
-
+            TouchAction action = new TouchAction((AppiumDriver)driver);
+            // action.press(right_x,middle_y).waitAction(300).moveTo(left_x,middle_y).release().perform(); поднятие версии
+            action
+                    .press(PointOption.point(right_x, middle_y)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)))
+                    .release()
+                    .perform();
+        }
+        else {
+            System.out.println("Method swipeElementToLeft() does nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
     }
 
         // рефактор свайпа проблема с Map.of
@@ -238,11 +274,15 @@ public class MainPageObject {
 
 
     public void tuochByCoordinate(int x,int y){
-        TouchAction action = new TouchAction(driver);
-        // action.press(x,y).release().perform(); // поднятие версии
-        action.press(PointOption.point(x, y));
-        action.release();
-        action.perform();
+        if (driver instanceof AppiumDriver) {
+            TouchAction action = new TouchAction((AppiumDriver)driver);
+            // action.press(x,y).release().perform(); // поднятие версии
+            action.press(PointOption.point(x, y));
+            action.release();
+            action.perform();
+        } else {
+            System.out.println("Method tuochByCoordinate() does nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
     }
 
     // определение типа локатора
@@ -258,7 +298,10 @@ public class MainPageObject {
             return By.id(locator);
         } else if (by_type.equals("resource-id")) {
             return By.id(locator);
-        } else {
+        } else if (by_type.equals("css")) {
+            return By.cssSelector(locator);
+        }
+        else {
             throw new IllegalArgumentException("Cannot get type of loccator. Loccator "+ locator_with_type);
         }
     }
@@ -278,8 +321,24 @@ public class MainPageObject {
     public boolean isElementLocatedOnTheScreen(String locator)
     {
         int element_location_by_y = this.waitForElementPresent(locator, "Cannot find element by locator", 5).getLocation().getY();
+        if (Platform.getInstance().isMW()) {
+            JavascriptExecutor JSExecutor = (JavascriptExecutor) driver;
+            Object js_result = JSExecutor.executeScript("return window.pageYOffset");
+            element_location_by_y-= Integer.parseInt(js_result.toString());
+        }
         int screen_size_by_y = driver.manage().window().getSize().getHeight();
         return element_location_by_y < screen_size_by_y;
     }
+
+
+    public  int getAmountOfElements(String loccator){
+        By by = this.getLocatorByString(loccator);
+        List elements = driver.findElements(by);
+        return elements.size();
+    }
+    public boolean isElementPresent(String loccator) {
+        return  getAmountOfElements(loccator) > 0;
+    }
+
 
 }

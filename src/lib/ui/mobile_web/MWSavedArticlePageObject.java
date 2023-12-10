@@ -1,10 +1,10 @@
-package lib.ui.ios;
+package lib.ui.mobile_web;
 
 import lib.ui.SavedArticlePageObject;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class iOSSavedArticlePageObject extends SavedArticlePageObject {
-    static {
+public class MWSavedArticlePageObject extends SavedArticlePageObject {
+    static  {
         SAVED = "xpath://XCUIElementTypeButton[@name='Сохранено']";
         EXPLORE = "xpath://XCUIElementTypeButton[@name=Лента']";
         FIELD_NAME_FOR_LIST = "id:org.wikipedia:id/item_title";
@@ -13,7 +13,7 @@ public class iOSSavedArticlePageObject extends SavedArticlePageObject {
         CLOSE_SINCH_X_BUTTON = "xpath://XCUIElementTypeButton[@name='Закрыть']";
         DELETE_BUTTON_ON_SAVED_PAGE = "xpath://XCUIElementTypeButton[@name='swipe action delete']";
     }
-    public iOSSavedArticlePageObject(RemoteWebDriver driver){
+    public MWSavedArticlePageObject(RemoteWebDriver driver){
         super(driver);
     }
 }

@@ -22,8 +22,14 @@ public class ArticleTests extends CoreTestCase {
         StartPageObject.skipOnboardingButton();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
-        if (Platform.getInstance().isAndroid()){SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");}
-        else SearchPageObject.clickByArticleWithSubstring("Язык программирования");
+        if (Platform.getInstance().isIOS()) {
+            SearchPageObject.clickByArticleWithSubstring("Язык программирования");
+        } else if (Platform.getInstance().isAndroid()) {
+            SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        } else {
+            SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        }
+
         if (Platform.getInstance().isAndroid()) {
         String article_title = ArticlePageObject.getArticleTitle();
         assertEquals(
@@ -32,11 +38,20 @@ public class ArticleTests extends CoreTestCase {
                 article_title
 
         );}
-        else {
+        else if (Platform.getInstance().isIOS()) {
             String article_title = ArticlePageObject.getArticleTitle();
             assertEquals(
                     "We see unexpected title",
                     "язык программирования",
+                    article_title
+
+            );
+        }
+        else {
+            String article_title = ArticlePageObject.getArticleTitle();
+            assertEquals(
+                    "We see unexpected title",
+                    "Java (programming language)",
                     article_title
 
             );
@@ -55,12 +70,14 @@ public class ArticleTests extends CoreTestCase {
 
         StartPageObject.skipOnboardingButton();
         SearchPageObject.initSearchInput();
-        if (Platform.getInstance().isAndroid()) {
         SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");}
-        else {
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("зык программирования");}
+        if (Platform.getInstance().isIOS()) {
+            SearchPageObject.clickByArticleWithSubstring("Язык программирования");
+        } else if (Platform.getInstance().isAndroid()) {
+            SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        } else {
+            SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        }
         ArticlePageObject.waitForTitleElement();
         MainPageObject.tuochByCoordinate(671,441);
         if (Platform.getInstance().isAndroid()) {ArticlePageObject.changeMenu();}
@@ -80,7 +97,13 @@ public class ArticleTests extends CoreTestCase {
         StartPageObject.skipOnboardingButton();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("зык программирования");
+        if (Platform.getInstance().isIOS()) {
+            SearchPageObject.clickByArticleWithSubstring("Язык программирования");
+        } else if (Platform.getInstance().isAndroid()) {
+            SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        } else {
+            SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        }
         ArticlePageObject.waitForTitleElement();
         MainPageObject.verticalSwipeToBottom();
 

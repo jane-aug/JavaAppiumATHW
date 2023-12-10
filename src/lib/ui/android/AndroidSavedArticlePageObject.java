@@ -1,7 +1,7 @@
 package lib.ui.android;
 
-import io.appium.java_client.AppiumDriver;
 import lib.ui.SavedArticlePageObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class AndroidSavedArticlePageObject extends SavedArticlePageObject {
     static {
@@ -16,7 +16,7 @@ public class AndroidSavedArticlePageObject extends SavedArticlePageObject {
         ITEM_TITLE = "id:org.wikipedia:id/item_title";
 
     }
-    public AndroidSavedArticlePageObject(AppiumDriver driver){
+    public AndroidSavedArticlePageObject(RemoteWebDriver driver){
         super(driver);
     }
 }

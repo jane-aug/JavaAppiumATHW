@@ -1,7 +1,7 @@
 package lib.ui.ios;
 
-import io.appium.java_client.AppiumDriver;
 import lib.ui.SearchPageObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class iOSSearchPageObject extends SearchPageObject {
     static {
@@ -15,7 +15,7 @@ public class iOSSearchPageObject extends SearchPageObject {
         EMPTY_RESULT_LABEL = "xpath://XCUIElementTypeStaticText[@name='Ничего не найдено']";
         CANCEL_BUTTON_IN_SEARCH_LINE = "xpath://XCUIElementTypeStaticText[@name='Отменить']";
     }
-    public iOSSearchPageObject(AppiumDriver driver){
+    public iOSSearchPageObject(RemoteWebDriver driver){
         super(driver);
     }
 }

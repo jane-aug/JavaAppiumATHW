@@ -3,11 +3,10 @@ package tests;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.*;
-import lib.ui.factories.ArticlePageObjectFactory;
-import lib.ui.factories.SavedArticlePageObjectFactory;
-import lib.ui.factories.SearchPageObjectFactory;
-import lib.ui.factories.StartPageObjectFactory;
+import lib.ui.factories.*;
 import org.junit.Test;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 public class MyListTest extends CoreTestCase
 {
     @Test
@@ -18,21 +17,50 @@ public class MyListTest extends CoreTestCase
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         SavedArticlePageObject SavedArticlePageObject = SavedArticlePageObjectFactory.get(driver);
+        AuthorizationPageObject AuthorizationPageObject = AuthorizationPageObjectFactory.get(driver);
 
 
         StartPageObject.skipOnboardingButton();
 
+        //Авторизация для сайта
+        if (Platform.getInstance().isMW()) {
+            driver.get("https://en.m.wikipedia.org/w/index.php?title=Special:UserLogin&returnto=Main+Page");
+            AuthorizationPageObject.enterLoginData("Shalanova", "Mem6rana1");
+            AuthorizationPageObject.submitForm();
+
+        } else {
+            System.out.println("Skip authorization for mobile");
+        }
+
         // 1 статья
         SearchPageObject.initSearchInput();
-        if (Platform.getInstance().isAndroid()){ SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");}
-        else {
-            SearchPageObject.typeSearchLine("Java");
+
+        SearchPageObject.typeSearchLine("Java");
+        if (Platform.getInstance().isIOS()) {
             SearchPageObject.clickByArticleWithSubstring("зык программирования");
+        } else if (Platform.getInstance().isAndroid()) {
+            SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        } else {
+            SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
         }
         if (Platform.getInstance().isAndroid()){ ArticlePageObject.changeMenu();}
-        else {System.out.println("Skip changeMenu for iOS");}
-        ArticlePageObject.saveArticle();
+        else {System.out.println("Skip changeMenu for iOS and web");}
+        if (Platform.getInstance().isMW()) {
+            ArticlePageObject.saveArticle();
+
+
+
+            ArticlePageObject.waitForTitleElement();
+            String article_title = ArticlePageObject.getArticleTitle();
+            assertEquals("We are not on the same page after login.",
+                    article_title,
+                    ArticlePageObject.getArticleTitle()
+                    );
+
+           ArticlePageObject.saveArticle();
+
+        }
+        else ArticlePageObject.saveArticle();
         // driver.navigate().back();
         // SearchPageObject.tapBycoordinate();
 
@@ -57,12 +85,15 @@ public class MyListTest extends CoreTestCase
         driver.navigate().back();
         driver.navigate().back();
         driver.navigate().back();}
-        else {
+        else if (Platform.getInstance().isIOS()) {
             driver.navigate().back();
             SearchPageObject.cancelSearch();
             driver.navigate().back();
             driver.navigate().back();
             driver.navigate().back();
+        } else {
+
+
         }
         SavedArticlePageObject.getSavedAriclePage();
 

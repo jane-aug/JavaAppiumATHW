@@ -18,7 +18,7 @@ public class CoreTestCase extends TestCase {
         this.openWikiWebPageForMobileWeb();
     }
 
-    @Override
+     @Override
     protected void tearDown() throws Exception
     {
         driver.quit();

@@ -26,5 +26,8 @@ abstract public class  AuthorizationPageObject  extends MainPageObject {
         this.waitForElementAndClick(SUBMIT_BUTTON, "Cannot find and click submit auth button",5 );
     }
 
+    public void checksubmitForm(){
+        boolean element = this.waitForElementNotPresent(SUBMIT_BUTTON, "Find submit auth button",5 );
+    }
 }
 

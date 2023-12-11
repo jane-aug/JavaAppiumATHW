@@ -98,7 +98,8 @@ public class Platform {
         mobileEmulation.put("userAgent", "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19");
 
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("window-size=340,640");
+        chromeOptions.addArguments("window-size=414,896");
+        //chromeOptions.addArguments("--auto-open-devtools-for-tabs");
 
         return  chromeOptions;
     }

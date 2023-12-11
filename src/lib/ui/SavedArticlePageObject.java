@@ -1,5 +1,8 @@
 package lib.ui;
 
+import lib.Platform;
+import org.junit.Assert;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 abstract public class SavedArticlePageObject extends MainPageObject{
@@ -14,6 +17,7 @@ abstract public class SavedArticlePageObject extends MainPageObject{
             ARTICLE_IN_LUST_RESULT_BY_SUBSTRING_TPL,
             ITEM_TITLE,
             CLOSE_SINCH_X_BUTTON,
+            REMOVE_FROM_SAVED_BUTTON,
             DELETE_BUTTON_ON_SAVED_PAGE;
 
 
@@ -25,6 +29,9 @@ abstract public class SavedArticlePageObject extends MainPageObject{
 
     private static String getResultArticleElement(String subString){
         return ARTICLE_IN_LUST_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", subString);
+    }
+    private static String getRemoveButtonByTitle(String article_title){
+        return REMOVE_FROM_SAVED_BUTTON.replace("TITLE", article_title);
     }
 
     public void clickByArticleInListWithSubstring(String subString){
@@ -59,9 +66,48 @@ abstract public class SavedArticlePageObject extends MainPageObject{
     public void closeSinchXButton (){
         waitForElementAndClick(CLOSE_SINCH_X_BUTTON,"Cannont find and click X button",5);
     }
-
     public void deleteArticleOnSavedPage(){
+        if (Platform.getInstance().isIOS() || Platform.getInstance().isAndroid()) {
         waitForElementAndClick(DELETE_BUTTON_ON_SAVED_PAGE,"Cannont find and click delete button",5);
+    } else {
+            waitForElementAndClick("xpath://div[@id='mw-content-text']/ul/li[@title='Appium']/a[contains(@class, 'watch-this-article watched')]","Cannont find and click delete button",5);
+
+
+//            String remove_locator = getRemoveButtonByTitle(article_title);
+//            this.waitForElementAndClick(
+//                    remove_locator,
+//                    "Cannot click button to remove article from saved",
+//                    10
+//            );
+
+        }
+    }
+
+    public WebElement assertSavedArticleHasNotText(String loccator, String value, String error_massage, long timeoutInSeconds) {
+        WebElement element = waitForElementPresent(loccator, error_massage, timeoutInSeconds);
+        String element_name;
+        element_name = element.getAttribute("title");
+        System.out.println(element_name);
+        Assert.assertNotEquals(
+                error_massage,
+                value,
+                element_name
+
+        );
+        return element;
+    }
+    public WebElement assertSavedArticleHasText(String loccator, String value, String error_massage, long timeoutInSeconds) {
+        WebElement element = waitForElementPresent(loccator, error_massage, timeoutInSeconds);
+        String element_name;
+        element_name = element.getAttribute("title");
+        System.out.println(element_name);
+        Assert.assertEquals(
+                error_massage,
+                value,
+                element_name
+
+        );
+        return element;
     }
 
 }

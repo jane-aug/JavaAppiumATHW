@@ -4,6 +4,7 @@ import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.*;
 import lib.ui.factories.*;
+import lib.ui.mobile_web.MWSavedArticlePageObject;
 import org.junit.Test;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -22,14 +23,16 @@ public class MyListTest extends CoreTestCase
         AuthorizationPageObject AuthorizationPageObject = AuthorizationPageObjectFactory.get(driver);
 
 
+
         StartPageObject.skipOnboardingButton();
 
         //Авторизация для сайта
         if (Platform.getInstance().isMW()) {
+            //Авторизация для сайта
             driver.get("https://en.m.wikipedia.org/w/index.php?title=Special:UserLogin&returnto=Main+Page");
-            AuthorizationPageObject.enterLoginData("Shalanova", "Mem6rana1");
+            AuthorizationPageObject.enterLoginData(login, password);
+            Thread.sleep(2000);
             AuthorizationPageObject.submitForm();
-
         } else {
             System.out.println("Skip authorization for mobile");
         }
@@ -40,41 +43,26 @@ public class MyListTest extends CoreTestCase
         SearchPageObject.typeSearchLine("Java");
         if (Platform.getInstance().isIOS()) {
             SearchPageObject.clickByArticleWithSubstring("зык программирования");
-        } else if (Platform.getInstance().isAndroid()) {
-            SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
         } else {
             SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+            Thread.sleep(3000);
         }
         if (Platform.getInstance().isAndroid()){ ArticlePageObject.changeMenu();}
         else {System.out.println("Skip changeMenu for iOS and web");}
-        if (Platform.getInstance().isMW()) {
-            ArticlePageObject.saveArticle();
-
-
-
-            ArticlePageObject.waitForTitleElement();
-            String article_title = ArticlePageObject.getArticleTitle();
-            assertEquals("We are not on the same page after login.",
-                    article_title,
-                    ArticlePageObject.getArticleTitle()
-                    );
-
-           ArticlePageObject.saveArticle();
-
-        }
-        else ArticlePageObject.saveArticle();
-        // driver.navigate().back();
-        // SearchPageObject.tapBycoordinate();
+         ArticlePageObject.saveArticle();
+        Thread.sleep(2000);
 
 
         // 2 статья
-        if (Platform.getInstance().isAndroid()){ SearchPageObject.initSearchInput();}
+        if (Platform.getInstance().isAndroid() || Platform.getInstance().isMW()){
+            SearchPageObject.initSearchInput();}
         else {   driver.navigate().back();
             SearchPageObject.initSearchInput();}
         SearchPageObject.clearSearchText();
-        if (Platform.getInstance().isAndroid()){
+        if (Platform.getInstance().isAndroid() || Platform.getInstance().isMW()){
         SearchPageObject.typeSearchLine("Appium");
-        SearchPageObject.clickByArticleWithSubstring("Automation for Apps");}
+        SearchPageObject.clickByArticleWithSubstring("Automation for Apps");
+        Thread.sleep(2000);}
         else {
             SearchPageObject.typeSearchLine("Appium");
             SearchPageObject.clickByArticleWithSubstring("Вид растений");
@@ -86,18 +74,20 @@ public class MyListTest extends CoreTestCase
         driver.navigate().back();
         driver.navigate().back();
         driver.navigate().back();
-        driver.navigate().back();}
+        driver.navigate().back();
+            SavedArticlePageObject.getSavedAriclePage();
+        }
         else if (Platform.getInstance().isIOS()) {
             driver.navigate().back();
             SearchPageObject.cancelSearch();
             driver.navigate().back();
             driver.navigate().back();
             driver.navigate().back();
+            SavedArticlePageObject.getSavedAriclePage();
+
         } else {
-
-
+            driver.get("https://en.m.wikipedia.org/wiki/Special:EditWatchlist");
         }
-        SavedArticlePageObject.getSavedAriclePage();
 
         //SavedArticlePageObject.clickByArticleInListWithSubstring("Saved");
         if (Platform.getInstance().isAndroid()) {
@@ -106,12 +96,31 @@ public class MyListTest extends CoreTestCase
             MainPageObject.swipeElementToLeft("xpath://*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']", "Cannot find saved article");
             MainPageObject.assertElementHasNotText("id:org.wikipedia:id/page_list_item_description", "Object-oriented programming language", "Cannot  delete article", 5);
             MainPageObject.assertElementHasText("id:org.wikipedia:id/page_list_item_description", "Automation for Apps", "Second article is still in list", 5);
-        } else {
+        } else if (Platform.getInstance().isIOS()) {
             SavedArticlePageObject.closeSinchXButton();
             MainPageObject.swipeElementToLeftv3("xpath://XCUIElementTypeStaticText[@name='Вид растений']","Cannot find saved article");
             SavedArticlePageObject.deleteArticleOnSavedPage();
             MainPageObject.assertElementHasNotText("xpath://XCUIElementTypeStaticText","Вид растений","Cannot  delete article",5);
             MainPageObject.assertElementHasText("xpath://XCUIElementTypeStaticText[contains(@name,'Язык программирования')]","Язык программирования","Second article is still in list",5);
+
+        }
+        else {
+            driver.navigate().refresh();
+            Thread.sleep(2000);
+            SavedArticlePageObject.deleteArticleOnSavedPage();
+            Thread.sleep(2000);
+            driver.navigate().refresh();
+           SavedArticlePageObject.assertSavedArticleHasNotText(
+                    "xpath://div[@id='mw-content-text']/ul/li[@title='Appium']",
+                    "Appium",
+                    "Cannot  delete article",
+                    5);
+            SavedArticlePageObject.assertSavedArticleHasText(
+                    "xpath://div[@id='mw-content-text']/ul/li[@title='Java (programming language)']",
+                    "Java (programming language)",
+                    "Second article is still in list",
+                    5);
+
 
         }
 
@@ -131,14 +140,13 @@ public class MyListTest extends CoreTestCase
 
     @Test
     public void testAuthForWeb() throws InterruptedException {
-        StartPageObject StartPageObject = StartPageObjectFactory.get(driver);
         AuthorizationPageObject AuthorizationPageObject = AuthorizationPageObjectFactory.get(driver);
 
         //Авторизация для сайта
             driver.get("https://en.m.wikipedia.org/w/index.php?title=Special:UserLogin&returnto=Main+Page");
             AuthorizationPageObject.enterLoginData(login, password);
+            Thread.sleep(5000);
             AuthorizationPageObject.submitForm();
-
             AuthorizationPageObject.checksubmitForm();
 
 

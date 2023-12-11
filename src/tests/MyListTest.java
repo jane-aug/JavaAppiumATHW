@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MyListTest extends CoreTestCase
 {
+    private  static final String login = "Shalanova";
+    private  static final String password = "Mem6rana1";
     @Test
     public void testEx5() throws InterruptedException {
         // сохраняем 2 статьи в одну папку, 1 удаляем и проверяем что осталась вторая по названию
@@ -127,4 +129,20 @@ public class MyListTest extends CoreTestCase
         SavedArticlePageObject.createNewList("First");
     }
 
+    @Test
+    public void testAuthForWeb() throws InterruptedException {
+        StartPageObject StartPageObject = StartPageObjectFactory.get(driver);
+        AuthorizationPageObject AuthorizationPageObject = AuthorizationPageObjectFactory.get(driver);
+
+        //Авторизация для сайта
+            driver.get("https://en.m.wikipedia.org/w/index.php?title=Special:UserLogin&returnto=Main+Page");
+            AuthorizationPageObject.enterLoginData(login, password);
+            AuthorizationPageObject.submitForm();
+
+            AuthorizationPageObject.checksubmitForm();
+
+
+
+
+    }
 }

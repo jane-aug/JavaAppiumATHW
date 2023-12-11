@@ -58,6 +58,7 @@ public class MainPageObject {
     //Общий метод для поиска элемента с передачей времени для таймаута и отправки ключей
     public WebElement waitForElementAndSendKeys(String loccator, String value, String error_massage, long timeoutInSeconds){
         WebElement element = waitForElementPresent(loccator,error_massage, timeoutInSeconds);
+        element.clear();
         element.sendKeys(value);
         return element;
     };
@@ -340,5 +341,22 @@ public class MainPageObject {
         return  getAmountOfElements(loccator) > 0;
     }
 
+    public void tryClickElementWithFewAttempts (String loccator, String error_message, int amount_of_attempts){
+        int current_attempts = 0;
+        boolean need_more_attempts = true;
+
+        while (need_more_attempts) {
+            try {
+                this.waitForElementAndClick(loccator, error_message, 3);
+                need_more_attempts = false;
+            } catch (Exception e) {
+                if (current_attempts > amount_of_attempts) {
+                    this.waitForElementAndClick(loccator, error_message, 3);
+                }
+            }
+
+            ++ current_attempts;
+        }
+    }
 
 }

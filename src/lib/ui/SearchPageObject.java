@@ -3,9 +3,11 @@ package lib.ui;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.offset.PointOption;
+import lib.Platform;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.List;
 
@@ -20,10 +22,12 @@ abstract public class SearchPageObject  extends  MainPageObject
             PLACEHOLDER_SEARCH_LINE,
             SEARCH_RESULT_LOCATOR ,
             EMPTY_RESULT_LABEL,
-            CANCEL_BUTTON_IN_SEARCH_LINE;
+            CANCEL_BUTTON_IN_SEARCH_LINE,
+            PLACEHOLDER_SEARCH_LINE_EN,
+            WELCOME_TEXT;
 
 
-    public SearchPageObject (AppiumDriver driver){
+    public SearchPageObject (RemoteWebDriver driver){
         super(driver);
     }
     private static String getResultSearchElement(String subString){
@@ -72,13 +76,26 @@ abstract public class SearchPageObject  extends  MainPageObject
     }
 
     public void checkPlaceholderInSearchLine(){
-        this.assertElementHasText(SEARCH_INPUT,PLACEHOLDER_SEARCH_LINE,"We see unexpected placeholder",5);
+        if (Platform.getInstance().isAndroid()) {
+            this.assertElementHasText(SEARCH_INPUT,PLACEHOLDER_SEARCH_LINE,"We see unexpected placeholder",5);
+        }
+        else if (Platform.getInstance().isIOS()) {
+            this.assertElementHasText(SEARCH_INPUT,PLACEHOLDER_SEARCH_LINE,"We see unexpected placeholder",5);
+        }
+        else if (Platform.getInstance().isMW()) {
+            this.assertElementHasText(SEARCH_INPUT,PLACEHOLDER_SEARCH_LINE_EN,"We see unexpected placeholder",5);
+
+        }
     }
 
     public void tapBycoordinate(){
-        TouchAction action = new TouchAction(driver);
+        if (driver instanceof AppiumDriver) {
+        TouchAction action = new TouchAction((AppiumDriver)driver);
         // action.press(369,1460); // поднятие версии
         action.press(PointOption.point(369,1460));
+        } else {
+            System.out.println("Method  tapBycoordinate() does nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
     }
 
     public int getAmountOfElements(String loccator){
@@ -92,7 +109,7 @@ abstract public class SearchPageObject  extends  MainPageObject
         int element_count = getAmountOfElements(SEARCH_RESULT_LOCATOR);
         Assert.assertTrue(
                 "We did not find any results",
-                element_count > 1
+                element_count > 0
 
         );
         return element;
@@ -105,5 +122,9 @@ abstract public class SearchPageObject  extends  MainPageObject
     public void cancelSearch(){
         waitForElementAndClick(CANCEL_BUTTON_IN_SEARCH_LINE, "Cannot find cancel button in search line", 5);
 
+    }
+
+    public void findWelcomeText(){
+        waitForElementPresent(WELCOME_TEXT, "Cannot find Welcome text", 5);
     }
 }

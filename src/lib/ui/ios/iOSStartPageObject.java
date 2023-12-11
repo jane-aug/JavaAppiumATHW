@@ -1,7 +1,7 @@
 package lib.ui.ios;
 
-import io.appium.java_client.AppiumDriver;
 import lib.ui.StartPageObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class iOSStartPageObject extends StartPageObject
 {
@@ -9,7 +9,7 @@ public class iOSStartPageObject extends StartPageObject
     static {
         START_SKIP_BUTTON = "xpath://XCUIElementTypeButton[@name='Пропустить']";
     }
-    public iOSStartPageObject(AppiumDriver driver){
+    public iOSStartPageObject(RemoteWebDriver driver){
         super(driver);
     }
 

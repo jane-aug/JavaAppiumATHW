@@ -6,6 +6,8 @@ import io.appium.java_client.touch.offset.PointOption;
 import lib.Platform;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
 import java.util.List;
 
 abstract public class ArticlePageObject extends MainPageObject{
@@ -20,9 +22,10 @@ abstract public class ArticlePageObject extends MainPageObject{
             SAVE_MENU ,
             SNACKBAR_ACTION ,
             FIRST_LIST ,
-            ARTICLE_RESULT_BY_SUBSTRING_TPL ;
+            ARTICLE_RESULT_BY_SUBSTRING_TPL,
+            OPTIONS_REMOVE_FROM_MY_LIST_BUTTON;
 
-    public ArticlePageObject(AppiumDriver driver){
+    public ArticlePageObject(RemoteWebDriver driver){
         super(driver);
     }
     private static String getResultListElement(String subString){
@@ -40,21 +43,32 @@ abstract public class ArticlePageObject extends MainPageObject{
         WebElement title_element = waitForTitleElement();
         if (Platform.getInstance().isAndroid()) {
         return  title_element.getAttribute("text");}
-        else return  title_element.getAttribute("name");
+        else if (Platform.getInstance().isIOS()){
+            return  title_element.getAttribute("name");}
+        else {
+            return title_element.getText();
+        }
     }
 
     public void assertArticleTitlePresent(){
-        List<WebElement> elements = driver.findElements(By.id(TITLE));
-        if (elements.isEmpty()) {
-            throw new AssertionError("Article name is did not loaded");
-       }
+        if (Platform.getInstance().isMW()) {
+            waitForElementPresent(TITLE,"Cannot find article title "+ TITLE, 10);
+        }
+        else {
+            List<WebElement> elements = driver.findElements(By.id(TITLE));
+            if (elements.isEmpty()) {
+                throw new AssertionError("Article name is did not loaded");
+            }
+        }
     }
 
     public void swipeToFooter(){
         if (Platform.getInstance().isAndroid()){
         this.swipeUpToFindElement(FOOTER_ELEMENT,"Did not find footer on Android", 40);}
-        else {
+        else if (Platform.getInstance().isIOS()) {
             this.swipeUpTillElementAppear(FOOTER_ELEMENT, "Did not find footer on iOS", 40);
+        } else {
+            this.scrollWebPageTillElementNotVisible(FOOTER_ELEMENT,"Did not find footer on web page", 40);
         }
     }
 
@@ -64,10 +78,15 @@ abstract public class ArticlePageObject extends MainPageObject{
 
 
     public void dragAndDrop(){
-       TouchAction action = new TouchAction(driver);
-       // action.longPress(999, 627).moveTo(9, 1640).release().perform(); // поднятие версии
-        action.longPress(PointOption.point(999, 627)).moveTo(PointOption.point(999, 1640)).release().perform();
+        if (driver instanceof AppiumDriver) {
+            TouchAction action = new TouchAction((AppiumDriver)driver);
+            // action.longPress(999, 627).moveTo(9, 1640).release().perform(); // поднятие версии
+            action.longPress(PointOption.point(999, 627)).moveTo(PointOption.point(999, 1640)).release().perform();
+        }
+        else {
+            System.out.println("Method dragAndDrop() does nothing for platform " + Platform.getInstance().getPlatformVar());
 
+        }
     }
 
 
@@ -79,13 +98,29 @@ abstract public class ArticlePageObject extends MainPageObject{
         driver.navigate().back();
     }
     public void saveArticle(){
-        if (Platform.getInstance().isAndroid()) {openMenu();}
-        else this.waitForElementAndClick(SAVE_MENU,"Cannot find save button in list",5);
+        if (Platform.getInstance().isMW()){
+            removeArticleFromSavedIfItAdded();
+        } else {
+            System.out.println("Method removeArticleFromSavedIfItAdded(); does nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
+        if (Platform.getInstance().isAndroid()) {
+            openMenu();
+        } else if (Platform.getInstance().isMW()) {
+            waitForElementAndClick(SAVE_MENU,"Cannot find save button on web page",5);
+        } else this.waitForElementAndClick(SAVE_MENU,"Cannot find save button in list",5);
         //this.waitForElementAndClick(By.id(SNACKBAR_ACTION),"Cannot find add to list",5);
         //this.waitForElementAndClick(By.id(FIRST_LIST),"Cannot find list",5);
         //this.waitForElementAndClick(By.id(SNACKBAR_ACTION),"Cannot find view list",5);
        // this.waitForSearchResult("Object-oriented programming language");
        // this.waitForElementAndClick(By.xpath(UNDO_BUTTON),"Cannot find undo",5);
+
+    }
+
+    public void removeArticleFromSavedIfItAdded () {
+        if (this.isElementPresent(OPTIONS_REMOVE_FROM_MY_LIST_BUTTON)) {
+            this.waitForElementAndClick(OPTIONS_REMOVE_FROM_MY_LIST_BUTTON, "Cannot click button to remove an article from save list", 5);
+            this.waitForElementPresent(SAVE_MENU, "Cannot find button to add an article to saved list after removing it from this list before",5);
+        }
 
     }
 }

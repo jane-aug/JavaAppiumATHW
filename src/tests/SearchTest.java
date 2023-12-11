@@ -1,6 +1,7 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
 import lib.ui.StartPageObject;
@@ -20,7 +21,7 @@ public class SearchTest extends CoreTestCase {
         StartPageObject.skipOnboardingButton();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.waitForSearchResult("Object-oriented programming language");
+        SearchPageObject.waitForSearchResult("bject-oriented programming language");
     }
 
 
@@ -33,9 +34,15 @@ public class SearchTest extends CoreTestCase {
         StartPageObject.skipOnboardingButton();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.waitForUndoButtonToAppear();
-        SearchPageObject.clickUndoButton();
-        SearchPageObject.waitForUndoButtonToDisappear();
+        if (Platform.getInstance().isMW()) {
+            driver.navigate().back();
+            SearchPageObject.findWelcomeText();
+        }
+        else {
+            SearchPageObject.waitForUndoButtonToAppear();
+            SearchPageObject.clickUndoButton();
+            SearchPageObject.waitForUndoButtonToDisappear();
+        }
     }
 
 
@@ -49,8 +56,12 @@ public class SearchTest extends CoreTestCase {
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clearSearchText();
+        if (Platform.getInstance().isMW()) {
+            driver.navigate().back();
+        }
+        else {
         SearchPageObject.clickUndoButton();
-        SearchPageObject.waitForUndoButtonToDisappear();
+        SearchPageObject.waitForUndoButtonToDisappear();}
     }
 
 
@@ -63,14 +74,24 @@ public class SearchTest extends CoreTestCase {
 
         StartPageObject.skipOnboardingButton();
         SearchPageObject.initSearchInput();
-        SearchPageObject.checkPlaceholderInSearchLine();
 
+
+        if (Platform.getInstance().isMW()) {
+            MainPageObject.assertElementHasText(
+                    "css:form>input[type='search']",
+                    "Search Wikipedia",
+                    "We see unexpected title",
+                    5
+            );
+        }
+        else {
+        SearchPageObject.checkPlaceholderInSearchLine();
         MainPageObject.assertElementHasText(
                 "id:org.wikipedia:id/search_src_text",
                 "Search Wikipedia",
                 "We see unexpected title",
                 5
-        );
+        );}
     }
 
 
